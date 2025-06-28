@@ -7,10 +7,33 @@ generator client {
   provider = "prisma-client-js"
 }
 
+enum Role {
+  COMPOSTADOR
+  DOADOR
+  ADMIN
+}
+
 model User {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  email     String   @unique
-  password  String
-  name      String?
-  createdAt DateTime @default(now())
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  email          String    @unique
+  password       String
+  phone          String?   // opcional
+  role           Role
+  address        String?   // endereço do local de compostagem (para compostador)
+  status         UserStatus @default(ACTIVE) // status da conta (ativo, suspenso..)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  lastLogin      DateTime?
+
+  // relacionamentos
+  donations      Donation[] // se quiser relacionar depois
+
+  @@index([email])
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+  DELETED
 }

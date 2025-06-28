@@ -2,7 +2,7 @@ import { askGemini } from '../services/compostAIService.js';
 
 export const chat = async (req, res) => {
     try {
-        const message = req.body;
+        const { message } = req.body;
 
         if (!message) {
             return res.status(400).json({ message: "Message cannot be empty" });

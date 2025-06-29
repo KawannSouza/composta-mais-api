@@ -19,3 +19,5 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => {
     console.log(`API funcionando na porta ${PORT}!`);
 });
+import registrosRoutes from './routes/registros.js';
+app.use("/registros", registrosRoutes);

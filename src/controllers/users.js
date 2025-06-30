@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import prisma from '../../prisma/prismaClient.js';
 
-//FUNÇÃO DE REGISTRO
+// FUNÇÃO DE REGISTRO
 export const register = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
@@ -26,9 +26,9 @@ export const register = async (req, res) => {
     console.log(error)
     return res.status(500).json({ error: "Internal server error!" });
   }
-}
+};
 
-//FUNÇÃO DE LOGIN
+// FUNÇÃO DE LOGIN
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -46,4 +46,57 @@ export const login = async (req, res) => {
   } catch (error) {
     return res.status(500).json({ error: "Internal server error!" });
   }
-}
+};
+
+// NOVA FUNÇÃO: EDITAR USUÁRIO
+export const editarUsuario = async (req, res) => {
+  const { id } = req.params;
+  const { name, email, password, phone, role, address, status } = req.body;
+
+  // Só o próprio usuário pode editar, ou um admin
+  if (req.user.userId !== id && req.user.role !== "ADMIN") {
+    return res.status(403).json({ error: "Você não tem permissão para editar este usuário." });
+  }
+
+  try {
+    const dadosAtualizados = { name, email, phone, role, address, status };
+
+    if (password) {
+      const hashed = await bcrypt.hash(password, 10);
+      dadosAtualizados.password = hashed;
+    }
+
+    const usuarioAtualizado = await prisma.user.update({
+      where: { id },
+      data: dadosAtualizados,
+      select: { id: true, name: true, email: true, role: true, phone: true, address: true, status: true }
+    });
+
+    return res.status(200).json({ message: "Usuário atualizado com sucesso!", usuario: usuarioAtualizado });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Erro ao atualizar usuário." });
+  }
+};
+
+
+// NOVA FUNÇÃO: EXCLUIR USUÁRIO
+export const excluirUsuario = async (req, res) => {
+  const { id } = req.params;
+
+  // Só o próprio usuário pode excluir a conta, ou um admin
+  if (req.user.userId !== id && req.user.role !== "ADMIN") {
+    return res.status(403).json({ error: "Você não tem permissão para excluir este usuário." });
+  }
+
+  try {
+    await prisma.user.delete({
+      where: { id }
+    });
+
+    return res.status(200).json({ message: "Usuário excluído com sucesso!" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Erro ao excluir usuário." });
+  }
+};

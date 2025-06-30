@@ -1,7 +1,14 @@
 // src/routes/users.routes.js
 
 import { Router } from 'express';
-import { register, login } from '../controllers/users.js';
+import {
+  register,
+  login,
+  editarUsuario,
+  excluirUsuario
+} from '../controllers/users.js';
+
+import { authenticate } from '../middlewares/authMiddleware.js'; // 👈 importa o middleware
 
 const router = Router();
 
@@ -84,36 +91,10 @@ const router = Router();
  *         description: Erro interno do servidor.
  */
 router.post("/register", register);
-
-/**
- * @swagger
- * /users/login:
- *   post:
- *     summary: Realiza o login de um usuário e retorna um token JWT
- *     tags: [Usuários]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/UserLogin'
- *     responses:
- *       200:
- *         description: Login bem-sucedido.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                 token:
- *                   type: string
- *       400:
- *         description: E-mail ou senha não fornecidos.
- *       401:
- *         description: Credenciais inválidas.
- */
 router.post("/login", login);
+
+// ✅ Rotas protegidas por autenticação:
+router.put("/:id", authenticate, editarUsuario);
+router.delete("/:id", authenticate, excluirUsuario);
 
 export default router;

@@ -23,7 +23,13 @@ export const register = async (req, res) => {
       select: { id: true, name: true, email: true, role: true }
     });
 
-    return res.status(201).json({ message: "User created successfully!", user });
+    const token = jwt.sign(
+      { userId: user.id, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: '1d' }
+    );
+
+    return res.status(201).json({ message: "User created successfully!", user, token });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: "Internal server error!" });

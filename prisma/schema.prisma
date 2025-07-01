@@ -1,4 +1,4 @@
-ddatasource db {
+datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
 }

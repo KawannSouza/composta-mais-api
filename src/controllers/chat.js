@@ -18,6 +18,7 @@ export const chat = async (req, res) => {
         const response = await askGemini(message);
         res.json({ response: response });
     } catch (error) {
+        console.log(error)
         res.status(500).json({ message: "Internal server error!" });
     }
 }

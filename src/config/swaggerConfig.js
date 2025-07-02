@@ -13,7 +13,7 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:3000',
+        url: 'https://composta-mais-api.onrender.com',
         description: 'Servidor de Desenvolvimento Local',
       },
     ],

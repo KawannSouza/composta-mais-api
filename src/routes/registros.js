@@ -76,7 +76,7 @@ const router = Router();
 
 /**
  * @swagger
- * /registros:
+ * /records/:
  *   post:
  *     summary: Cria um novo registro de compostagem (requer autenticação)
  *     tags: [Registros]
@@ -100,7 +100,7 @@ router.post("/", authenticate, criarRegistro);
 
 /**
  * @swagger
- * /registros:
+ * /records/:
  *   get:
  *     summary: Lista todos os registros do usuário autenticado
  *     tags: [Registros]

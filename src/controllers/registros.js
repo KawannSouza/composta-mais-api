@@ -2,7 +2,14 @@ import prisma from '../../prisma/prismaClient.js';
 
 export const criarRegistro = async (req, res) => {
   try {
-    const { data, tipoDeResiduo, notas, problemas } = req.body;
+    const {
+      data,
+      tipoDeResiduo,
+      quantidadeDeResiduo,
+      notas,
+      problemas
+    } = req.body;
+
     const userId = req.user.userId;
 
     // Restrição: só COMPOSTADOR pode criar registros
@@ -12,7 +19,14 @@ export const criarRegistro = async (req, res) => {
       });
     }
 
-    if (!data || !tipoDeResiduo || !notas || !problemas) {
+    // Validação dos campos obrigatórios
+    if (
+      !data ||
+      !tipoDeResiduo ||
+      quantidadeDeResiduo === undefined ||
+      !notas ||
+      !problemas
+    ) {
       return res.status(400).json({ error: "Todos os campos são obrigatórios!" });
     }
 
@@ -20,6 +34,7 @@ export const criarRegistro = async (req, res) => {
       data: {
         data: new Date(data),
         tipoDeResiduo,
+        quantidadeDeResiduo: parseFloat(quantidadeDeResiduo),
         notas,
         problemas,
         user: { connect: { id: userId } }
@@ -45,3 +60,4 @@ export const listarRegistros = async (req, res) => {
     return res.status(500).json({ error: "Erro ao buscar registros." });
   }
 };
+

@@ -12,13 +12,6 @@ export const criarRegistro = async (req, res) => {
 
     const userId = req.user.userId;
 
-    // Restrição: só COMPOSTADOR pode criar registros
-    if (req.user.role !== 'COMPOSTADOR') {
-      return res.status(403).json({
-        error: "Acesso restrito: somente usuários COMPOSTADOR podem registrar resíduos."
-      });
-    }
-
     // Validação dos campos obrigatórios
     if (
       !data ||

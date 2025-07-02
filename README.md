@@ -57,7 +57,7 @@ Antes de executar o projeto, certifique-se de ter instalado:
 
 ```bash
 # Clone o repositório
-git clone https://github.com/seu-usuario/seu-repositorio.git
+git clone [https://github.com/seu-usuario/seu-repositorio.git](https://github.com/KawannSouza/composta-mais-api.git)
 
 # Acesse a pasta do projeto
 cd compostagem-api
@@ -89,7 +89,7 @@ JWT_SECRET=sua_chave_secreta_aqui
 npm run dev
 ```
 
-> A API estará disponível em: [http://localhost:4000](http://localhost:4000)
+> A API estará disponível em: https://composta-mais-api.onrender.com
 
 ---
 
@@ -97,7 +97,7 @@ npm run dev
 
 A documentação Swagger pode ser acessada em:
 
-[http://localhost:4000/api-docs](http://localhost:4000/api-docs)
+(https://composta-mais-api.onrender.com/api-docs)
 
 ---
 
